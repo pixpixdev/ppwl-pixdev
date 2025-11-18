@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\ProductController;
+use App\Http\Controllers\CategoryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -18,6 +19,10 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
+Route::get('/', function () {
+    return view('user.home');
+})->name('home');
+
 // Admin
 Route::get('/dashboard', function () {
  return view('dashboard');
@@ -27,12 +32,8 @@ Route::get('/dashboard', function () {
 //  return view('user.home');
 // })->name('home');
 
-Route::get('/', function () {
-    return view('home');
-})->name('home');
-
 Route::resource('/products', ProductController::class);
-
+Route::resource('/category', CategoryController::class);
 
 
 require __DIR__.'/auth.php';
