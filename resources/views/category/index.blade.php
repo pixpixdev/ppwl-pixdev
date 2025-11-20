@@ -1,4 +1,4 @@
-@extends('layouts.sneat')
+@extends('layouts.app')
 @section('title', 'Daftar Kategori')
 @section('content')
 <div class="container-xxl flex-grow-1 container-p-y">

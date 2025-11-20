@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Contracts\View\View;
@@ -8,59 +9,64 @@ use Illuminate\Contracts\View\View;
 class CategoryController extends Controller
 {
     public function index(): View
-{
-    $categories = Category::when(request('search'), function ($query) {
-        $query->where('nama', 'like', '%' . request('search') . '%');
-    })->paginate(10);
+    {
+        $categories = Category::when(request('search'), function ($query) {
+            $query->where('nama', 'like', '%' . request('search') . '%');
+        })->paginate(10);
 
-    return view('category.index', compact('categories'));
-}
+        return view('category.index', compact('categories'), [
+            'title' => 'Daftar Kategori'
+        ]);
+    }
 
-public function create(): View
-{
-    return view('category.create');
-}
+    public function create(): View
+    {
+        return view('category.create', [
+            'title' => 'Tambah Kategori Baru'
+        ]);
+    }
 
-public function store(Request $request)
-{
-    $request->validate([
-        'nama' => 'required|string|max:255',
-    ]);
 
-    Category::create([
-        'nama' => $request->nama,
-    ]);
+    public function store(Request $request)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+        ]);
 
-    return redirect()->route('category.index')
-        ->with('success', 'Kategori berhasil ditambahkan.');
-}
+        Category::create([
+            'nama' => $request->nama,
+        ]);
 
-public function edit(Category $category): View
-{
-    return view('category.edit', compact('category'));
-}
+        return redirect()->route('category.index')
+            ->with('success', 'Kategori berhasil ditambahkan.');
+    }
 
-public function update(Request $request, Category $category)
-{
-    $request->validate([
-        'nama' => 'required|string|max:255',
-    ]);
+    public function edit(Category $category,): View
+    {
+        return view('category.edit', compact('category'), [
+            'title' => 'Edit Kategori'
+        ]);
+    }
 
-    $category->update([
-        'nama' => $request->nama,
-    ]);
+    public function update(Request $request, Category $category)
+    {
+        $request->validate([
+            'nama' => 'required|string|max:255',
+        ]);
 
-    return redirect()
-        ->route('category.index')
-        ->with('success', 'Kategori berhasil diperbarui.');
-}
+        $category->update([
+            'nama' => $request->nama,
+        ]);
 
-public function destroy(Category $category)
-{
-    $category->delete();
+        return redirect()
+            ->route('category.index')
+            ->with('success', 'Kategori berhasil diperbarui.');
+    }
 
-    return redirect()->route('category.index')
-        ->with('success', 'Kategori berhasil dihapus.');
-}
-
+    public function destroy(Category $category)
+    {
+        $category->delete();
+        return redirect()->route('category.index')
+            ->with('success', 'Kategori berhasil dihapus.');
+    }
 }

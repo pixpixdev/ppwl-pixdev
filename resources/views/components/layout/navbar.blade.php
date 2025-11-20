@@ -29,8 +29,8 @@
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <span class="fw-semibold d-block">John Doe</span>
-                                    <small class="text-muted">Admin</small>
+                                    <span class="fw-semibold d-block">{{ Auth::user()->name ?? 'User' }}</span>
+                                    <small class="text-muted">{{ Auth::user()->role ?? 'Admin' }}</small>
                                 </div>
                             </div>
                         </a>
@@ -54,12 +54,16 @@
                     </li>
                     <li><div class="dropdown-divider"></div></li>
 
-                    <!-- Log Out -->
+                    <!-- Log Out (styled link + hidden form) -->
                     <li>
-                        <a class="dropdown-item" href="auth-login-basic.html">
+                        <a id="logout-link" class="dropdown-item" href="#">
                             <i class="bx bx-power-off me-2"></i>
                             <span class="align-middle">Log Out</span>
                         </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
                     </li>
                 </ul>
             </li>
@@ -67,3 +71,16 @@
         </ul>
     </div>
 </nav>
+
+<script>
+    // submit the hidden logout form (keeps dropdown styling and uses POST)
+    (function () {
+        const logoutLink = document.getElementById('logout-link');
+        const logoutForm = document.getElementById('logout-form');
+        if (!logoutLink || !logoutForm) return;
+        logoutLink.addEventListener('click', function (e) {
+            e.preventDefault();
+            logoutForm.submit();
+        });
+    })();
+</script>

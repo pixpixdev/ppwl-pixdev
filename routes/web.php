@@ -19,18 +19,21 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-Route::get('/', function () {
-    return view('user.home');
-})->name('home');
 
 // Admin
 Route::get('/dashboard', function () {
  return view('dashboard');
 })->middleware(['auth', 'verified', 'admin'])->name('dashboard');
 // User
-// Route::get('/', function () {
-//  return view('user.home');
-// })->name('home');
+Route::get('/', function () {
+    return view('home');
+})->name('home');
+
+ Route::get('/', function () {
+  return view('user.home');
+ })->name('home');
+
+
 
 Route::resource('/products', ProductController::class);
 Route::resource('/category', CategoryController::class);
