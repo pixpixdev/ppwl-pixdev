@@ -39,14 +39,14 @@
 
             <div class="layout-page">
                 <!-- Navbar -->
-                @include('components.layout.navbar')
+                @include('components.user.navbar')
 
                 <div class="content-wrapper">
                     <!-- Main Content -->
                     @yield('content')
 
                     <!-- Footer -->
-                    @include('components.layout.footer')
+                    @include('components.user.footer')
                 </div>
             </div>
         </div>

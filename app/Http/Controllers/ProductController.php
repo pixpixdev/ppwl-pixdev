@@ -15,7 +15,7 @@ class ProductController extends Controller
             $query->where('nama', 'like', '%' . request('search') . '%');
         })->paginate(10);
 
-        return view('products.index', compact('products'),[
+        return view('products.index', compact('products'), [
             'title' => 'Daftar Produk'
         ]);
     }
@@ -23,21 +23,21 @@ class ProductController extends Controller
     public function create(): View
     {
         $categories = Category::all();
-        return view('products.create', compact('categories'),[
+        return view('products.create', compact('categories'), [
             'title' => 'Tambah Produk Baru'
         ]);
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'nama' => 'required|string|max:255',
-            'harga' => 'required|numeric',
-            'stok' => 'required|numeric',
-            'deskripsi' => 'required|string',
-            'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'kategori_id' => 'required|exists:categories,id',
-        ]);
+        $request->valida([
+                'nama' => 'required|string|max:255',
+                'harga' => 'required|numeric',
+                'stok' => 'required|numeric',
+                'deskripsi' => 'required|string',
+                'foto' => 'required|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+                'kategori_id' => 'required|exists:categories,id',
+            ]);
 
         $fotoPath = $request->file('foto')->store('foto', 'public');
 
@@ -57,7 +57,7 @@ class ProductController extends Controller
     public function edit(Product $product): View
     {
         $categories = Category::all();
-        return view('products.edit', compact('product', 'categories'),[
+        return view('products.edit', compact('product', 'categories'), [
             'title' => 'Edit Produk'
         ]);
     }
@@ -92,5 +92,10 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('products.index')
             ->with('success', 'Produk berhasil dihapus.');
+    }
+
+    public function show(Product $product)
+    {
+        return view('products.show', compact('product'));
     }
 }
