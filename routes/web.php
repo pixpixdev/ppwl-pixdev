@@ -5,6 +5,7 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CartController;
 use App\Http\Controllers\CheckoutController;
+use App\Http\Controllers\OrderController;
 use App\Models\Product;
 use Illuminate\Support\Facades\Route;
 
@@ -18,6 +19,7 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
 
 // Profile Routes (User)
 Route::middleware('auth')->group(function () {
@@ -44,8 +46,16 @@ Route::post('/cart/update/{product}', [CartController::class, 'update'])->name('
 Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
 
 
-// Checkout Routes
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+// Checkout & Order History Routes (require authentication)
+Route::middleware('auth')->group(function () {
+    // Checkout Routes
+    Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+    Route::post('/checkout', [CheckoutController::class, 'process'])->name('checkout.process');
+    Route::get('/checkout/sukses', [CheckoutController::class, 'sukses'])->name('checkout.sukses');
+    Route::put('/checkout/{order}/bukti-pembayaran',[CheckoutController::class,'updatePaymentProof'])->name('checkout.updatePaymentProof');
+
+    // Order History Routes
+    Route::get('/orders/history', [OrderController::class, 'history'])->name('orders.history');
+});
 
 require __DIR__ . '/auth.php';

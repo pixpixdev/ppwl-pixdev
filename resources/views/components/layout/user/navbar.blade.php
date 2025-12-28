@@ -11,7 +11,16 @@
                 <li class="nav-item"><a class="nav-link" href="#testimoni">Pesanan</a></li>
                 <li class="nav-item"><a class="nav-link" href="#kontak">Pembayaran</a></li>
             </ul>
-            <a href="#" class="btn btn-primary ms-lg-3">Login</a>
+            @guest
+                <a href="{{ route('login') }}" class="btn btn-primary ms-lg-3">Login</a>
+            @endguest
+
+            @auth
+                <form method="POST" action="{{ route('logout') }}" class="d-inline ms-lg-3">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-secondary">Logout</button>
+                </form>
+            @endauth
         </div>
     </div>
 </nav>

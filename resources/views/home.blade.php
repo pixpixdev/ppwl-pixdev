@@ -24,7 +24,13 @@
                                 <div class="card-body text-center">
                                     <h5 class="card-title">{{ $product->nama }}</h5>
                                     <p class="card-text text-muted">Rp {{ number_format($product->harga, 0, ',', '.') }}</p>
-                                    <a href="#" class="btn btn-outline-primary">Produk Detail </a>
+                                    <a href="#" class="btn btn-outline-primary">Produk Detail</a>
+
+                                    <form action="{{ route('cart.add', $product->id) }}" method="POST" class="mt-3">
+                                        @csrf
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="btn btn-outline-success">Add to cart</button>
+                                    </form>
                                 </div>
                             </div>
                         </div>

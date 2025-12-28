@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
@@ -23,6 +24,7 @@ class CartController extends Controller
         $cart = session()->get('cart', []);
         if (isset($cart[$product->id])) {
             $cart[$product->id]['quantity']++;
+        } else {
             $cart[$product->id] = [
                 "nama" => $product->nama,
                 "quantity" => 1,
